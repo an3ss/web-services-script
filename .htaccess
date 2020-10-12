@@ -1,0 +1,7 @@
+#-------------------------------------------------------------------------------
+# Web Services Apache Configuration
+#-------------------------------------------------------------------------------
+RewriteEngine on
+
+# Rewrite service requests to 'webservices.php'
+RewriteRule ^((?:[a-z][a-zA-Z0-9]*\/)?[a-z][a-zA-Z0-9]*)$ webservices.php?servicePath=$1 [QSA,L]
