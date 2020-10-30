@@ -18,11 +18,11 @@
  */
 ini_set('display_errors', 1);
 
-// Include database configuration
-include 'webservices-config.php';
-
-// Include database API
-include 'webservices-database.php';
+// Include database configuration and API
+if (file_exists('webservices-config.php')) {
+   include 'webservices-config.php';
+   include 'webservices-database.php';
+}
 
 Service_create();
 Service_execute();
