@@ -18,11 +18,11 @@
  */
 ini_set('display_errors', 1);
 
-// Include database configuration and API
-if (file_exists('webservices-config.php')) {
-   include 'webservices-config.php';
-   include 'webservices-database.php';
-}
+// Include configuration file
+include 'webservices-config.php';
+
+// Include database API
+include 'webservices-database.php';
 
 Service_create();
 Service_execute();
@@ -97,7 +97,7 @@ class ServiceException extends RuntimeException {
             'line' => $e->getLine()
          );
 
-         if ($e->msgid != 'LOGIN_ERROR') {
+         if ($LOG_EXCEPTIONS && $e->msgid != 'LOGIN_ERROR') {
             $log = date("H:i:s").' '.$Service_path.'.php('.$e->getLine().') - '.$e->msgid.': '.$e->getMessage().PHP_EOL;
             file_put_contents('logs/'.date("Y-m-d").'.log', $log, FILE_APPEND);
          }
@@ -112,12 +112,14 @@ class ServiceException extends RuntimeException {
             'line' => $e->getLine()
          );
 
-         if (file_exists("services/$Service_path.php")) {
-            $log = date("H:i:s").' '.$Service_path.' - '.get_class($e).': '.$e->getMessage().PHP_EOL.$e->getTraceAsString().PHP_EOL;
-         } else {
-            $log = date("H:i:s").' '.$Service_path.' - Service not found ['.$_SERVER['REQUEST_METHOD'].'] '.$_SERVER['QUERY_STRING'].PHP_EOL;
+         if ($LOG_EXCEPTIONS) {
+            if (file_exists("services/$Service_path.php")) {
+               $log = date("H:i:s").' '.$Service_path.' - '.get_class($e).': '.$e->getMessage().PHP_EOL.$e->getTraceAsString().PHP_EOL;
+            } else {
+               $log = date("H:i:s").' '.$Service_path.' - Service not found ['.$_SERVER['REQUEST_METHOD'].'] '.$_SERVER['QUERY_STRING'].PHP_EOL;
+            }
+            file_put_contents('logs/'.date("Y-m-d").'.log', $log, FILE_APPEND);
          }
-         file_put_contents('logs/'.date("Y-m-d").'.log', $log, FILE_APPEND);
       }
 
       if (is_array($serviceResponse)) {
