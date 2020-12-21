@@ -2,15 +2,15 @@
 /**
  * Simple PHP script for web services with JSON responses. Includes a database API.
  *
- * Each service must be defined as simple PHP script in the /services directory.
+ * Each service is defined as simple PHP script in the /services directory.
  * A service URL "/<servicePath>" is processed by including the file '/services/<servicePath>.php'
  * and converting its return value to a server response.
  *
- * The <servicePath> supports one subdirectory level (see .htaccess). This subdirectory
- * can be used to implement services for different modules or apps. It is also used as
- * the default database id (see the database API).
+ * The <servicePath> supports one subdirectory level: <serviceDirectory>/<serviceName>.
+ * This subdirectory can be used to implement services for different modules or apps.
+ * It is also used as the default database id (see the database API).
  *
- * The supported responses from the included service file are:
+ * The following types of response are supported:
  * - An array that will be returned as JSON data to the client.
  * - A string holding the path of a local image to be returned to the client.
  *
